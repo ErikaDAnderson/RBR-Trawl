@@ -42,7 +42,7 @@ dataFolderName <- paste0(getwd(), "/Output/Data", Sys.Date())
 # create folder if it doesn't exist
 dir.create(dataFolderName)
 
-Event_input <- here::here("Input/2020-017_FallSalmonSurvey/2020-017_BridgeLog_digital-2020-09-16.xlsx")
+Event_input <- here::here("Input/2020-017_FallSalmonSurvey/2020-017_BridgeLog_digital-2020-10-15.xlsx")
 Headrope_input <- paste0(dataFolder, "/HEADROPE")
 Footrope_input <- paste0(dataFolder, "/FOOTROPE")
 
@@ -52,7 +52,7 @@ Footrope_input <- paste0(dataFolder, "/FOOTROPE")
 # Read in Manual Fishing Event from excel file including:
 # Station_ID, Event #, Location, Date, Start Time, End Time, tow_time, 
 # Net OPenning, Head Depth, Warp, Comments
-event_num <- read_xlsx(Event_input)
+event_num <- read_xlsx(Event_input, sheet = "Details")
 event_num <- subset(event_num, select = c("StationID", "Event", "Type", "Location", "Year", "Month", "Day", 
                                           "StartTime", "StopTime", "TowTime", "VerticalNetOpening", 
                                           "TargetHeadDepth", "ActualHeadDepth", "Warp", "Comments"))
@@ -131,9 +131,9 @@ net_calcs <- filter(net_calcs, Depth_head > 0)
 #assign RBR data to local time for graphing and comparison with bridge log
 net_calcs$Time <- force_tz(net_calcs$Time, tzone = "Canada/Pacific")
 
-# # expand event interval to show deployment and retrieval on graph
- minute(event_num$FE_END_DEPLOYMENT_TIME) <- minute(event_num$FE_END_DEPLOYMENT_TIME)  - 10
- minute(event_num$FE_BEGIN_RETRIEVAL_TIME) <- minute(event_num$FE_BEGIN_RETRIEVAL_TIME)  + 10
+# # # expand event interval to show deployment and retrieval on graph
+#  minute(event_num$FE_END_DEPLOYMENT_TIME) <- minute(event_num$FE_END_DEPLOYMENT_TIME)  - 10
+#  minute(event_num$FE_BEGIN_RETRIEVAL_TIME) <- minute(event_num$FE_BEGIN_RETRIEVAL_TIME)  + 10
 
 #Search the set intervals in the event_num dataframe, 
 #(i.e. time between FE_END_DEPLOYMENT_TIME and FE_BEGIN_RETRIEVAL_TIME, for each event)
